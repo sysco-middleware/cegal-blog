@@ -1,0 +1,56 @@
+{
+  "name": "curious-programming",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "lint-strict": "cross-env PRE_COMMIT=true next lint",
+    "prettier-fix": "prettier --write .",
+    "prepare": "husky install",
+    "update-all": "npx npm-check-updates --interactive && npm install"
+  },
+  "dependencies": {
+    "@mdx-js/loader": "^2.1.3",
+    "@next/mdx": "^12.3.0",
+    "@portabletext/react": "^1.0.6",
+    "@sanity/asset-utils": "^1.3.0",
+    "@sanity/client": "^3.4.1",
+    "@sanity/image-url": "^1.0.1",
+    "@types/probe-image-size": "^7.2.0",
+    "cross-env": "^7.0.3",
+    "date-fns": "^2.29.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "logrocket": "^3.0.1",
+    "next": "12.3.x",
+    "next-mdx-remote": "^4.1.0",
+    "probe-image-size": "^7.2.3",
+    "react": "18.2.x",
+    "react-dom": "18.2.x",
+    "react-google-recaptcha-v3": "^1.10.0",
+    "react-syntax-highlighter": "^15.5.0"
+  },
+  "devDependencies": {
+    "@types/node": "18.x.x",
+    "@types/react": "18.0.x",
+    "@types/react-dom": "18.0.x",
+    "@types/react-syntax-highlighter": "^15.5.5",
+    "autoprefixer": "^10.4.9",
+    "eslint": "8.x.x",
+    "eslint-config-next": "^12.3.0",
+    "eslint-config-prettier": "^8.5.0",
+    "husky": "^8.0.1",
+    "lint-staged": "^13.0.3",
+    "postcss": "^8.4.16",
+    "prettier": "^2.7.1",
+    "tailwindcss": "^3.1.8",
+    "typescript": "4.8.x"
+  },
+  "engines": {
+    "node": ">=16.14.0 <17.0.0",
+    "npm": ">=8.3.0",
+    "yarn": "Use NPM instead"
+  }
+}

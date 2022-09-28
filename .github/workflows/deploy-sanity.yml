@@ -1,0 +1,31 @@
+name: Deploy Sanity
+
+on:
+  push:
+    branches:
+      - "main"
+
+jobs:
+  pr-lint-build:
+    name: Run lint and build
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./sanity
+
+    strategy:
+      matrix:
+        node-version: [14.x]
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - run: npm install -g @sanity/cli
+      - run: npm i
+      - run: npm -v && node -v
+      - run: sanity versions
+      - run: SANITY_AUTH_TOKEN=${{ secrets.SANITY_AUTH_TOKEN }} sanity deploy
