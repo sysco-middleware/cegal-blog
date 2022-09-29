@@ -29,7 +29,7 @@ export function HomeInfoSection() {
     <section className="flex items-center justify-center">
       <div className="container flex flex-col items-center md:flex-row mb-10 px-6 space-y-4 mx-auto">
         <div className="flex flex-col space-y-4 md:w-1/2">
-          <h1 className="max-w-md text-3xl font-bold text-center md:text-4xl md:text-left">A place for Curiosity</h1>
+          <h1 className="max-w-md text-3xl font-bold text-center md:text-4xl md:text-left">A place for Developers</h1>
           <p className="max-w-sm text-center text-white md:text-left">
             A collection of blog post, videos and more for mainly frontend developers, but also so much more. Everything
             from low level processor architecture to developer rights and more.
