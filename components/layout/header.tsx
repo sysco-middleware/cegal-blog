@@ -1,41 +1,35 @@
-import Link from "next/link";
-import { useState } from "react";
-import { HamburgerButton } from "../HamburgerButton";
+import Link from 'next/link'
 
 interface PageItem {
-  href: string;
-  label: string;
+  href: string
+  label: string
 }
 
-export function Header() {
+export function Header () {
   const pages: PageItem[] = [
     {
-      href: "/",
-      label: "Blog",
+      href: '/',
+      label: 'Blog'
     },
     {
-      href: "/video",
-      label: "Videos",
+      href: '/video',
+      label: 'Videos'
     },
     {
-      href: "/about",
-      label: "About",
-    },
-  ];
-  const [open, setOpen] = useState(false);
+      href: '/about',
+      label: 'About'
+    }
+  ]
+
   return (
-    <>
-      <div className="p-5 lg:p-10">
-        <nav className="text-primary mx-auto flex max-w-8xl items-center justify-between">
-          <div>
-            <Link href={"/"}>
-              <a className="text-primary underlined focus:outline-none block whitespace-nowrap text-xl sm:text-3xl md:text-4xl lg:text-5xl font-medium transition">
-                Cegal Blog
-              </a>
-            </Link>
-          </div>
-        </nav>
+    <header className='h-40 border-[#00FF97] border-b px-14'>
+      <div className='text-primary mx-auto flex max-w-8xl items-center justify-between h-full'>
+        <Link href='/'>
+          <a className='text-primary focus:outline-none block whitespace-nowrap text-xl sm:text-3xl md:text-4xl lg:text-5xl font-medium transition'>
+            CEGAL
+          </a>
+        </Link>
       </div>
-    </>
-  );
+    </header>
+  )
 }

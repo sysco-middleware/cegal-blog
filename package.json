@@ -13,6 +13,10 @@
     "update-all": "npx npm-check-updates --interactive && npm install"
   },
   "dependencies": {
+    "@cegal/ui-components": "^0.8.3",
+    "@cegal/ui-css": "^0.8.1",
+    "@cegal/ui-icons": "^0.8.1",
+    "@cegal/ui-logos": "^0.8.0",
     "@mdx-js/loader": "^2.1.3",
     "@next/mdx": "^12.3.0",
     "@portabletext/react": "^1.0.6",
