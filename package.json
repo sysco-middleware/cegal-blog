@@ -1,5 +1,5 @@
 {
-  "name": "curious-programming",
+  "name": "cegal-technical-blog",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -10,7 +10,8 @@
     "lint-strict": "cross-env PRE_COMMIT=true next lint",
     "prettier-fix": "prettier --write .",
     "prepare": "husky install",
-    "update-all": "npx npm-check-updates --interactive && npm install"
+    "update-all": "npx npm-check-updates --interactive && npm install",
+    "typecheck": "tsc"
   },
   "dependencies": {
     "@cegal/ui-components": "^0.8.3",
