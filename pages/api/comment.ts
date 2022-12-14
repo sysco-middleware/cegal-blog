@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { sanityClientBackend } from "../../shared/sanityClientBackend";
-import { httpClient } from "../../shared/httpClient";
+import { sanityClientBackend } from "../../shared/api/sanityClient";
+import { httpClient } from "../../shared/api/httpClient";
 import { config } from "../../shared/config";
 import { getPostSlug } from "../../shared/api/getPostSlug";
 
@@ -10,14 +10,20 @@ const badRequestError = (response: NextApiResponse, error: string) => {
   });
 };
 
-export default async function handler(request: NextApiRequest, response: NextApiResponse) {
+export default async function handler(
+  request: NextApiRequest,
+  response: NextApiResponse
+) {
   if (request.method === "GET") {
     response.status(200).json({
       comments: [],
     });
   } else if (request.method === "POST") {
     if (request.body.comment.length > 1000) {
-      return badRequestError(response, "Comment is too long, max 1000 characters");
+      return badRequestError(
+        response,
+        "Comment is too long, max 1000 characters"
+      );
     }
 
     if (!request.body.recaptchaToken) {
@@ -60,7 +66,7 @@ export default async function handler(request: NextApiRequest, response: NextApi
     }
 
     // force rebuild with new comment
-    await response.revalidate("/post/" + postSlug.slug.current);
+    await response.revalidate("/blog/post/" + postSlug.slug.current);
 
     response.status(200).json({
       ...newDoc,

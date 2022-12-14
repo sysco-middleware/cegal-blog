@@ -6,12 +6,12 @@ export const config = {
   },
   reCaptchaKey: "6LcY3DgiAAAAAJaQpaFo1vSXaPff-SLxeGBQdHk2",
   metaTags: {
-    title: "Curious Programming Blog",
-    mainDescription: `A collection of blog post, videos and more for mainly frontend developers, but also so much more. Everything from low level processor architecture to developer rights and more.`,
+    title: "Cegal Technical blog",
+    mainDescription: `An internal technical blog for Cegal tech enthusiasts.`,
   },
   apiErrors: {
     tooLowRecaptchaScore: "Too low recaptcha score",
   },
   readSpeedWPM: 200,
-  postsPerPage: 3,
+  postsPerPage: 20,
 } as const;

@@ -1,12 +1,27 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ReactNode } from "react";
-import { Category } from "../shared/Category.interface";
-import { SanitySlug } from "../shared/SanitySlug.interface";
+import { BlogPost, SanitySlug } from "shared/types";
+import { getMinToRead } from "utils/blog";
+import { PostAuthor } from "./PostAuthor";
 import { PostCategoriesList } from "./PostCategoriesList";
+import { DateTimeToRead } from "./DateTimeToRead";
+
+type BlogPostCardProps = Pick<
+  BlogPost,
+  "author" | "categories" | "body" | "createdAt"
+> & {
+  title: string;
+  slug: SanitySlug;
+  postedDate: string;
+  imageUrl: string;
+  ingress: string;
+  sumReactions: number;
+  sumComments: number;
+};
 
 export function BlogPostCard({
   title,
+  author,
   slug,
   categories,
   postedDate,
@@ -14,54 +29,47 @@ export function BlogPostCard({
   ingress,
   sumReactions,
   sumComments,
-  children,
-}: {
-  title: string;
-  slug: SanitySlug;
-  categories: Category[];
-  postedDate: string;
-  imageUrl: string;
-  ingress: string;
-  sumReactions: number;
-  sumComments: number;
-  children?: ReactNode;
-}) {
-  // https://flowbite.com/docs/components/card/
+  body,
+}: BlogPostCardProps) {
+  const readTime = getMinToRead(body);
+
   return (
-    <>
-      <div>
-        <Link
-          key={title}
-          href={"/post/" + slug.current}
-        >
-          <a>
-            <div className="relative h-40">
-              <Image
-                src={imageUrl}
-                className="rounded-t-lg"
-                layout="fill"
-                objectFit={"cover"}
-                alt="Main image for post"
-              />
-            </div>
-            <div className="p-6 border border-b-0 border-t-0 shadow-md bg-gray-800 border-gray-700">
-              <h5 className="mb-2 text-2xl font-bold tracking-tight text-white">{title}</h5>
-              <div className="mb-3 font-normal text-gray-400">
-                <div className=""> Published: {postedDate}</div>
-                {ingress}
-                {children}
-              </div>
-            </div>
-          </a>
-        </Link>
-        <div className="py-2 px-6 mt-0 rounded-lg rounded-t-none border shadow-md bg-gray-900 border-gray-700 flex justify-between items-center">
-          <div className="flex flex-col md:flex-row space-x-0 md:space-x-4">
-            <div>{sumReactions} reactions</div>
-            <div>{sumComments} comments</div>
+    <div className="flex h-[420px] min-w-[280px] flex-1 flex-col  rounded border border-contrast-dark shadow-md hover:border-cegal-green">
+      <div className="relative h-20" style={{ position: "relative" }}>
+        <Image
+          alt={`main-image-for-post-${slug?.current}`}
+          className="rounded-t"
+          fill
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          src={imageUrl}
+          style={{ objectFit: "cover" }}
+        />
+      </div>
+      <div className="flex flex-grow flex-col items-stretch justify-between px-6 py-4">
+        <div>
+          <PostAuthor author={author} />
+          <div className="my-2 flex overflow-auto whitespace-nowrap scrollbar-hide">
+            <PostCategoriesList categories={categories} />
           </div>
-          <PostCategoriesList categories={categories} />
+
+          <Link key={title} href={"/blog/post/" + slug.current}>
+            <span className="flex flex-col items-baseline py-4 pr-4 text-sm font-normal text-secondary-text-color">
+              <h5 className="overflow-hidden text-ellipsis pr-2 text-xl font-bold tracking-tight text-white line-clamp-1">
+                {title}
+              </h5>
+
+              <DateTimeToRead body={body} postedDate={postedDate} />
+            </span>
+            <div className="mb-3 flex-grow  overflow-hidden text-ellipsis font-normal text-gray-400 line-clamp-3">
+              {ingress}
+            </div>
+          </Link>
+        </div>
+        <div className="justify-self-bottom flex flex-row  space-x-4 ">
+          <div>{sumReactions} reactions</div>
+          <div>{sumComments} comments</div>
         </div>
       </div>
-    </>
+    </div>
   );
 }

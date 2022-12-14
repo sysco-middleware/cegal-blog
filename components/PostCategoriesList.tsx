@@ -1,17 +1,24 @@
-import NextLink from 'next/link'
-import { Button } from '@cegal/ui-components'
-import { Link } from '@cegal/ui-components'
-import { Category } from '../shared/Category.interface'
+import NextLink from "next/link";
+import { Category } from "shared/types";
 
-export function PostCategoriesList (props: { categories: Category[] }) {
+type PostCategoriesListProps = {
+  categories: Category[];
+};
+
+export function PostCategoriesList(props: PostCategoriesListProps) {
   return (
-    <div className='flex space-x-2'>
+    <>
       {props.categories &&
-        props.categories.map(({ slug, title }) => (
-          <NextLink href={'/category/' + slug.current} key={slug.current} passHref>
-            <Link>{title}</Link>
-          </NextLink>
+        props.categories.map(({ slug, title, id }) => (
+          <span
+            key={id}
+            className="mr-4 rounded-full border border-cegal-green px-4 text-cegal-green opacity-60  hover:opacity-100"
+          >
+            <NextLink href={"/category/" + slug.current} passHref>
+              {title}
+            </NextLink>
+          </span>
         ))}
-    </div>
-  )
+    </>
+  );
 }

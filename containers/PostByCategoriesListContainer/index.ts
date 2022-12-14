@@ -2,4 +2,4 @@ export {
   default,
   getStaticPaths,
   getStaticProps,
-} from "containers/PostByCategoriesListContainer";
+} from "./PostByCategoriesListContainer";

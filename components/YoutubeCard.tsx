@@ -1,6 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import Image from "next/image";
-import { Video } from "../shared/Video.interface";
+import { Video } from "shared/types";
 
 interface Props {
   video: Video;
@@ -14,7 +13,7 @@ export function YoutubeCard(props: Props) {
       rel="noreferrer"
     >
       <div className="flex justify-center">
-        <div className="flex flex-col md:flex-row rounded-xl bg-white shadow-lg">
+        <div className="flex flex-col rounded-xl bg-white shadow-lg md:flex-row">
           {/* TODO fix on both mobile and desktop */}
           {/* <Image
             src={props.video.thumbnail}
@@ -25,13 +24,17 @@ export function YoutubeCard(props: Props) {
             layout="responsive"
           ></Image> */}
           <img
-            className="w-full md:h-auto  rounded-t-lg md:rounded-none md:rounded-l-lg"
+            className="w-full rounded-t-lg  md:h-auto md:rounded-none md:rounded-l-lg"
             src={props.video.thumbnail}
             alt=""
           />
-          <div className="p-6 flex flex-col justify-start">
-            <h5 className="text-gray-900 text-xl font-medium mb-2">{props.video.title}</h5>
-            <p className="text-gray-700 text-base mb-4">{props.video.description}</p>
+          <div className="flex flex-col justify-start p-6">
+            <h5 className="mb-2 text-xl font-medium text-gray-900">
+              {props.video.title}
+            </h5>
+            <p className="mb-4 text-base text-gray-700">
+              {props.video.description}
+            </p>
           </div>
         </div>
       </div>

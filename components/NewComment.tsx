@@ -1,14 +1,18 @@
 import LogRocket from "logrocket";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { config } from "../shared/config";
-import { httpClient } from "../shared/httpClient";
-import { ButtonGradient } from "./ButtonGradient";
+import { httpClient } from "../shared/api/httpClient";
+import { TextField, Textarea, Button } from "@cegal/ui-components";
 import { LoadingSpinner } from "./LoadingSpinner";
 import { Notification } from "./Notification";
 import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 
-export function NewComment(props: { postId: string; myUserName: string; setMyUserName: (newValue: string) => void }) {
+export function NewComment(props: {
+  postId: string;
+  myUserName: string;
+  setMyUserName: (newValue: string) => void;
+}) {
   const router = useRouter();
   const showMessageOnReloadKey = "delayedMessage";
   const [loading, isLoading] = useState(false);
@@ -57,8 +61,10 @@ export function NewComment(props: { postId: string; myUserName: string; setMyUse
     if (response.status === 400) {
       if (response.body.error === config.apiErrors.tooLowRecaptchaScore) {
         setSubmitError("Your captcha score is too low to submit comments");
+        isLoading(false);
       } else {
         setSubmitError("Error submitting comment");
+        isLoading(false);
       }
     }
     if (response.status === 200) {
@@ -68,7 +74,10 @@ export function NewComment(props: { postId: string; myUserName: string; setMyUse
       });
       // consider a TTL so it is gone on page navigation
       if (response.body.approved) {
-        sessionStorage.setItem(showMessageOnReloadKey, "Comment added successfully ✔️");
+        sessionStorage.setItem(
+          showMessageOnReloadKey,
+          "Comment added successfully ✔️"
+        );
       } else {
         sessionStorage.setItem(
           showMessageOnReloadKey,
@@ -86,30 +95,39 @@ export function NewComment(props: { postId: string; myUserName: string; setMyUse
   return (
     <div className="">
       {showSuccessNotification.length > 0 && (
-        <Notification onClick={() => removeNotification()}>{showSuccessNotification}</Notification>
+        <Notification onClick={() => removeNotification()}>
+          {showSuccessNotification}
+        </Notification>
       )}
       <form onSubmit={onSubmit}>
-        <h1 className="mt-10 text-3xl font-bold">Add a new comment:</h1>
+        <h1 className="mt-10 text-2xl font-bold">Add a new comment:</h1>
         {loading && <LoadingSpinner />}
-        {/* <InputMarkdown /> */}
-        <input
+        <TextField
           type="text"
-          className="text-black mt-4 p-2 rounded-md w-full md:w-1/2"
+          className="mt-2 w-full rounded-md  text-black md:w-1/2"
           placeholder="Author"
           value={props.myUserName}
-          onChange={(e) => props.setMyUserName(e.target.value)}
+          onChange={(e: ChangeEvent<HTMLInputElement>) => {
+            props.setMyUserName(e.target.value);
+          }}
         />
-        <textarea
-          className="w-full h-40 p-2 my-4 text-black rounded-md"
+        <Textarea
+          className="my-2 w-full rounded-md text-black"
           placeholder="Comment"
           value={comment}
-          onChange={(event) => setComment(event.target.value)}
-        ></textarea>
+          rows={6}
+          onChange={(event: ChangeEvent<HTMLTextAreaElement>) =>
+            setComment(event.target.value)
+          }
+          resize
+        />
 
-        {submitError && <p className="text-red-500 mb-4">{submitError}</p>}
+        {submitError && <p className="mb-4 text-red-500">{submitError}</p>}
 
         {comment.length > 0 && props.myUserName.length > 0 && (
-          <ButtonGradient disabled={comment.length === 0}>Add Comment</ButtonGradient>
+          <Button disabled={comment.length === 0} type="submit">
+            Add Comment
+          </Button>
         )}
       </form>
     </div>

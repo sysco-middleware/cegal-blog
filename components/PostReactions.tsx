@@ -1,15 +1,37 @@
 import { useState } from "react";
+import { ThumbUp, ThumbDown } from "@cegal/ui-icons";
+import { Button } from "@cegal/ui-components";
 import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
-import { httpClient } from "../shared/httpClient";
-import { Reaction } from "../shared/Reaction.interface";
+import { httpClient } from "../shared/api/httpClient";
+import { Reaction, SingleBlogPost, ReactionName } from "shared/types";
 
-export function PostReactions(props: { postId: string; reactions: Reaction[] }) {
+type PostReactionsProps = {
+  post: SingleBlogPost;
+};
+
+export function PostReactions({ post }: PostReactionsProps) {
+  const reactions: Reaction[] = [
+    {
+      emoji: <ThumbUp size={25} />,
+      emojiName: ReactionName.Like,
+      count: post?.likeReactions ?? 0,
+    },
+    {
+      emoji: <ThumbDown size={25} />,
+      emojiName: ReactionName.Dislike,
+      count: post?.dislikeReactions ?? 0,
+    },
+  ];
   const [selectedEmoji, setSelectedEmoji] = useState("");
   const [lastVotedEmoji, setLastVotedEmoji] = useState("");
   const { executeRecaptcha } = useGoogleReCaptcha();
 
   const addReaction = async (emoji: string) => {
-    const submitReaction = async (emoji: string, postId: string, change: 1 | -1) => {
+    const submitReaction = async (
+      emoji: string,
+      postId: string,
+      change: 1 | -1
+    ) => {
       if (!executeRecaptcha) {
         console.error("Execute recaptcha not yet available");
         return;
@@ -29,37 +51,34 @@ export function PostReactions(props: { postId: string; reactions: Reaction[] }) 
     if (selectedEmoji === emoji) {
       setSelectedEmoji("");
       setLastVotedEmoji("");
-      await submitReaction(emoji, props.postId, -1);
+      await submitReaction(emoji, post.id, -1);
       return;
     }
     setSelectedEmoji(emoji);
     setLastVotedEmoji(emoji);
     if (lastVotedEmoji.length == 2) {
-      await submitReaction(lastVotedEmoji, props.postId, -1);
+      await submitReaction(lastVotedEmoji, post.id, -1);
     }
-    await submitReaction(emoji, props.postId, 1);
+    await submitReaction(emoji, post.id, 1);
   };
 
   return (
-    <div className="mt-10 flex flex-col items-center justify-center">
-      <h1 className="text-2xl mb-2 font-bold">Your reaction?</h1>
-      <div className="flex space-x-2">
-        {props.reactions.map((reaction) => (
-          <div
-            key={reaction.emoji}
-            className="flex items-center justify-center"
+    <div className="flex space-x-2">
+      {reactions.map((reaction) => (
+        <div key={reaction.emojiName} className="">
+          <Button
+            className={`flex flex-row items-baseline justify-center rounded-3xl p-4 text-2xl `}
+            icon={reaction.emoji}
+            iconPosition="left"
+            variant="tertiary"
+            onClick={() => addReaction(reaction.emojiName)}
           >
-            <button
-              className={` text-4xl p-4 rounded-3xl hover:scale-105 active:scale-95 ${
-                reaction.emoji === selectedEmoji ? "bg-active-orange" : "bg-secondary-dark "
-              }`}
-              onClick={() => addReaction(reaction.emoji)}
-            >
-              {reaction.emoji} {reaction.count + (reaction.emoji === selectedEmoji ? 1 : 0)}
-            </button>
-          </div>
-        ))}
-      </div>
+            <span className="ml-2">
+              {reaction.count + (reaction.emojiName === selectedEmoji ? 1 : 0)}
+            </span>
+          </Button>
+        </div>
+      ))}
     </div>
   );
 }

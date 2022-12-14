@@ -1,6 +1,6 @@
 import urlBuilder from "@sanity/image-url";
 import { getImageDimensions } from "@sanity/asset-utils";
-import { sanityClient } from "../../shared/sanityClient";
+import { sanityClient } from "shared/api/sanityClient";
 
 // Barebones lazy-loaded image component
 export const PortableTextImage = ({ value, isInline }: any) => {
